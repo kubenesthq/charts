@@ -1,0 +1,220 @@
+# Default values for kubenest-workload
+
+# =============================================================================
+# NAMING
+# =============================================================================
+nameOverride: ""
+fullnameOverride: ""
+
+# =============================================================================
+# IMAGE CONFIGURATION
+# =============================================================================
+image:
+  repository: nginx
+  pullPolicy: IfNotPresent
+  tag: ""  # Defaults to chart appVersion if not set
+
+imagePullSecrets: []
+
+# =============================================================================
+# DEPLOYMENT CONFIGURATION
+# =============================================================================
+deployment:
+  replicaCount: 1
+  
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  securityContext: {}
+
+# =============================================================================
+# CONTAINER CONFIGURATION
+# =============================================================================
+container:
+  port: 8080
+  
+  additionalPorts: []
+  
+  env: []
+  
+  envFrom: []
+  
+  command: []
+  
+  args: []
+  
+  livenessProbe:
+    enabled: true
+    httpGet:
+      path: /healthz
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    successThreshold: 1
+    failureThreshold: 3
+  
+  readinessProbe:
+    enabled: true
+    httpGet:
+      path: /ready
+      port: http
+    initialDelaySeconds: 10
+    periodSeconds: 5
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 3
+  
+  startupProbe:
+    enabled: false
+    httpGet:
+      path: /healthz
+      port: http
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    timeoutSeconds: 3
+    successThreshold: 1
+    failureThreshold: 30
+  
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+# =============================================================================
+# INIT CONTAINERS
+# =============================================================================
+initContainers: []
+
+# =============================================================================
+# WORKER DEPLOYMENT (OPTIONAL)
+# =============================================================================
+worker:
+  enabled: false
+  replicaCount: 1
+  
+  container:
+    command: []
+    args: []
+    env: []
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+
+# =============================================================================
+# SERVICE CONFIGURATION
+# =============================================================================
+service:
+  enabled: true
+  type: ClusterIP
+  port: 80
+  targetPort: http
+  
+  additionalPorts: []
+  
+  annotations: {}
+  labels: {}
+
+# =============================================================================
+# INGRESS CONFIGURATION
+# =============================================================================
+ingress:
+  enabled: false
+  className: ""
+  
+  annotations: {}
+  
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  
+  tls: []
+
+# =============================================================================
+# CONFIGMAP CONFIGURATION
+# =============================================================================
+configMap:
+  enabled: true
+  
+  data: {}
+  
+  mountPath: ""
+
+# =============================================================================
+# SECRET CONFIGURATION
+# =============================================================================
+secret:
+  enabled: false
+  
+  data: {}
+  
+  mountPath: ""
+
+# =============================================================================
+# PERSISTENT VOLUME CONFIGURATION
+# =============================================================================
+persistence:
+  enabled: false
+  
+  storageClass: ""
+  
+  accessMode: ReadWriteOnce
+  
+  size: 10Gi
+  
+  mountPath: /data
+  
+  existingClaim: ""
+  
+  annotations: {}
+
+# =============================================================================
+# AUTOSCALING CONFIGURATION
+# =============================================================================
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+# =============================================================================
+# POD DISRUPTION BUDGET
+# =============================================================================
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+
+# =============================================================================
+# SERVICE ACCOUNT
+# =============================================================================
+serviceAccount:
+  create: true
+  
+  annotations: {}
+  
+  name: ""
+
+# =============================================================================
+# NODE SCHEDULING
+# =============================================================================
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
