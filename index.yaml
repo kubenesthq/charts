@@ -3,6 +3,28 @@ entries:
   kubenest-workload:
   - apiVersion: v2
     appVersion: "1.0"
+    created: "2025-10-28T03:11:19.191621414Z"
+    description: Default Helm chart for Kubenest workloads with support for deployments,
+      workers, services, ingress, and configuration management
+    digest: f8137195d3a46ffe3fa25ad0a049b18a593522c09906ae0d9d08ac506534a24a
+    home: https://github.com/kubenesthq/charts
+    keywords:
+    - kubenest
+    - workload
+    - deployment
+    - microservices
+    maintainers:
+    - email: team@kubenest.io
+      name: Kubenest Team
+    name: kubenest-workload
+    sources:
+    - https://github.com/kubenesthq/charts
+    type: application
+    urls:
+    - https://github.com/kubenesthq/charts/releases/download/kubenest-workload-1.1.0/kubenest-workload-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
+    appVersion: "1.0"
     created: "2025-10-01T11:56:31.143201+05:30"
     description: Default Helm chart for Kubenest workloads with support for deployments,
       workers, services, ingress, and configuration management
@@ -23,4 +45,4 @@ entries:
     urls:
     - https://github.com/kubenesthq/charts/releases/download/kubenest-workload-1.0.0/kubenest-workload-1.0.0.tgz
     version: 1.0.0
-generated: "2025-10-01T11:56:31.14238+05:30"
+generated: "2025-10-28T03:11:19.191629008Z"
