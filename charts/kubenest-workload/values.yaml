@@ -50,7 +50,7 @@ container:
   args: []
   
   livenessProbe:
-    enabled: true
+    enabled: false  # Disabled by default - enable and configure per workload as needed
     httpGet:
       path: /healthz
       port: http
@@ -59,9 +59,9 @@ container:
     timeoutSeconds: 5
     successThreshold: 1
     failureThreshold: 3
-  
+
   readinessProbe:
-    enabled: true
+    enabled: false  # Disabled by default - enable and configure per workload as needed
     httpGet:
       path: /ready
       port: http
