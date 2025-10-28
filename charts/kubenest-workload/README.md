@@ -4,7 +4,7 @@ Default Helm chart for Kubenest workloads with comprehensive support for deploym
 
 ## Features
 
-- **Deployment**: Configurable replicas, rolling updates, health checks, resource limits
+- **Deployment**: Configurable replicas, rolling updates, optional health checks, resource limits
 - **Worker Deployment**: Optional background workers using the same image
 - **Service**: ClusterIP, NodePort, or LoadBalancer with additional ports support
 - **Ingress**: Multiple hosts and paths with TLS support
@@ -14,6 +14,7 @@ Default Helm chart for Kubenest workloads with comprehensive support for deploym
 - **Autoscaling**: HPA based on CPU/memory metrics
 - **Pod Disruption Budget**: High availability configuration
 - **Service Account**: With annotations for cloud IAM integration
+- **Health Probes**: Optional liveness, readiness, and startup probes (disabled by default)
 
 ## Installation
 
@@ -85,6 +86,35 @@ secret:
   data:
     DB_PASSWORD: cGFzc3dvcmQxMjM=
 ```
+
+#### Application with Health Checks
+
+```yaml
+image:
+  repository: myapp
+  tag: "1.0.0"
+
+container:
+  port: 8080
+
+  livenessProbe:
+    enabled: true
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 30
+    periodSeconds: 10
+
+  readinessProbe:
+    enabled: true
+    httpGet:
+      path: /ready
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 5
+```
+
+> **Note**: Health probes are disabled by default. Enable them explicitly if your application provides health endpoints.
 
 ## Testing
 
