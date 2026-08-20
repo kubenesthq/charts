@@ -129,8 +129,37 @@ service:
   labels: {}
 
 # =============================================================================
-# INGRESS CONFIGURATION
+# HTTPROUTE CONFIGURATION (Gateway API)
 # =============================================================================
+# The preferred exposure on KubeNest platform clusters, whose core ingress is
+# Traefik with Gateway API. Each rule's backendRefs always target this chart's
+# own Service on service.port. TLS and HTTP->HTTPS redirect belong to the
+# Gateway named in parentRefs, not to the route.
+httpRoute:
+  enabled: false
+
+  annotations: {}
+
+  # Gateway(s) the route attaches to.
+  parentRefs: []
+  #  - name: kubenest-gateway
+  #    namespace: kubenest-system
+  #    sectionName: ""   # optional: pin to one listener
+
+  hostnames: []
+  #  - app.example.com
+
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+
+# =============================================================================
+# INGRESS CONFIGURATION (legacy)
+# =============================================================================
+# Kept for clusters that still run their own Ingress controller. KubeNest
+# platform clusters have none — use httpRoute there.
 ingress:
   enabled: false
   className: ""

@@ -1,13 +1,14 @@
 # Kubenest Workload Helm Chart
 
-Default Helm chart for Kubenest workloads with comprehensive support for deployments, workers, services, ingress, and configuration management.
+Default Helm chart for Kubenest workloads with comprehensive support for deployments, workers, services, Gateway API HTTPRoutes, and configuration management.
 
 ## Features
 
 - **Deployment**: Configurable replicas, rolling updates, optional health checks, resource limits
 - **Worker Deployment**: Optional background workers using the same image
 - **Service**: ClusterIP, NodePort, or LoadBalancer with additional ports support
-- **Ingress**: Multiple hosts and paths with TLS support
+- **HTTPRoute**: Gateway API exposure — the route on KubeNest platform clusters, whose core ingress is Traefik with Gateway API (TLS terminates at the Gateway)
+- **Ingress** (legacy): Multiple hosts and paths with TLS support, for clusters that run their own Ingress controller
 - **ConfigMap**: Always created for application configuration
 - **Secret**: Optional secret management with volume mounting
 - **Persistent Volume**: Optional PVC for stateful applications
@@ -19,7 +20,7 @@ Default Helm chart for Kubenest workloads with comprehensive support for deploym
 ## Installation
 
 ```bash
-helm repo add kubenest https://charts.kubenest.io
+helm repo add kubenest https://kubenesthq.github.io/charts
 helm repo update
 
 helm install my-app kubenest/kubenest-workload \
@@ -33,7 +34,26 @@ See [values.yaml](values.yaml) for all configuration options.
 
 ### Common Examples
 
-#### Simple Web Application
+#### Simple Web Application (Gateway API)
+
+```yaml
+image:
+  repository: myapp
+  tag: "1.0.0"
+
+container:
+  port: 3000
+
+httpRoute:
+  enabled: true
+  parentRefs:
+    - name: kubenest-gateway
+      namespace: kubenest-system
+  hostnames:
+    - myapp.example.com
+```
+
+#### Simple Web Application (legacy Ingress)
 
 ```yaml
 image:
